@@ -1,12 +1,11 @@
 package com.sagr.task;
 
 import android.os.Bundle;
-import android.util.Log;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.sagr.task.adapter.TaskRecViewAdapter;
 import com.sagr.task.models.Task;
 
@@ -22,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         recyclerView = findViewById(R.id.recyclerView);
         adapter = new TaskRecViewAdapter();
         ArrayList<Task> tasks = new ArrayList<>();
@@ -35,4 +35,5 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 }

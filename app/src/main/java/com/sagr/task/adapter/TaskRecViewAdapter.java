@@ -1,16 +1,19 @@
 package com.sagr.task.adapter;
 
-import android.content.Context;
-import android.util.AttributeSet;
+
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.sagr.task.R;
 import com.sagr.task.models.Task;
 
@@ -32,8 +35,23 @@ public class TaskRecViewAdapter extends RecyclerView.Adapter<TaskRecViewAdapter.
 
         holder.taskId.setText(String.valueOf(taskArrayList.get(holder.getAdapterPosition()).getId()));
         holder.taskTitle.setText(taskArrayList.get(holder.getAdapterPosition()).getTaskTitle());
-        holder.checkBox.setActivated(taskArrayList.get(holder.getAdapterPosition()).isDone());
+        holder.parent.setOnClickListener((View v)->{
+            final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(holder.itemView.getContext());
+            bottomSheetDialog.setContentView(R.layout.bottom_sheet_layout);
+            final Button btnSave = bottomSheetDialog.findViewById(R.id.btnSave);
 
+
+            final EditText editTitle = bottomSheetDialog.findViewById(R.id.editTaskTitle);
+            btnSave.setOnClickListener(v1 -> {
+                holder.taskTitle.setText(editTitle.getText());
+                Toast.makeText(holder.itemView.getContext(), "Success",Toast.LENGTH_SHORT).show();
+                bottomSheetDialog.hide();
+            });
+
+            bottomSheetDialog.show();
+
+
+        });
 
     }
 
@@ -42,15 +60,16 @@ public class TaskRecViewAdapter extends RecyclerView.Adapter<TaskRecViewAdapter.
         return taskArrayList.size();
     }
 
-    public class TaskViewHolder extends RecyclerView.ViewHolder{
-        private TextView taskId ,taskTitle;
-
-        private CheckBox checkBox;
+    public static class TaskViewHolder extends RecyclerView.ViewHolder{
+        private final TextView taskId ,taskTitle;
+        private final RelativeLayout parent;
+        private final CheckBox checkBox;
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
-            taskId = itemView.findViewById(R.id.txtTaskId);
-            taskTitle = itemView.findViewById(R.id.txtTaskTitle);
-            checkBox = itemView.findViewById(R.id.checkBox);
+            taskId =(TextView) itemView.findViewById(R.id.txtTaskId);
+            taskTitle = (TextView) itemView.findViewById(R.id.txtTaskTitle);
+            checkBox = (CheckBox) itemView.findViewById(R.id.checkBox);
+            parent =(RelativeLayout) itemView.findViewById(R.id.parent);
         }
     }
 
