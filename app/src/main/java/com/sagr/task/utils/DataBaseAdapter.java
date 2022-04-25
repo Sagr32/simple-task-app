@@ -40,19 +40,33 @@ public class DataBaseAdapter {
         c = sqLiteDatabase.query(DataBaseHelper.TABLE_NAME,columns,null,null,null,null,null);
         while (c.moveToNext()){
             Log.i("SQL",c.getString(1));
-            taskArrayList.add(new Task((c.getInt(0)),c.getString(1)));
+            taskArrayList.add(new Task((c.getInt(0)),c.getString(1),toBoolean(c.getInt(2))));
+            Log.i("SQL",String.valueOf(c.getInt(2)));
         }
         return taskArrayList ;
     }
 
-    public boolean updateTaskTitle(int id , String title){
+    public void updateTaskTitle(int id , String title){
         ContentValues cv = new ContentValues();
         cv.put(DataBaseHelper.COL_Title,title);
         SQLiteDatabase sqLiteDatabase =databaseHelper.getWritableDatabase();
-        sqLiteDatabase.update(DataBaseHelper.TABLE_NAME,cv, DataBaseHelper.COL_Id+" = ?", new String[]{String.valueOf(id)});
-        return true;
+       int asds =  sqLiteDatabase.update(DataBaseHelper.TABLE_NAME,cv, DataBaseHelper.COL_Id+" = ?", new String[]{String.valueOf(id)});
+        Log.i("SQL",String.valueOf(asds));
+
     }
 
+
+
+    public void updateTaskStatus(int id , int status){
+        ContentValues cv = new ContentValues();
+        cv.put(DataBaseHelper.COL_IsDone,status);
+        SQLiteDatabase sqLiteDatabase =databaseHelper.getWritableDatabase();
+     sqLiteDatabase.update(DataBaseHelper.TABLE_NAME,cv, DataBaseHelper.COL_Id+" = ?", new String[]{String.valueOf(id)});
+    }
+
+    private boolean toBoolean(int i){
+        return i==0 ?  false:true;
+    }
 
     public static class DataBaseHelper extends SQLiteOpenHelper{
 

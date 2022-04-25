@@ -1,10 +1,10 @@
 package com.sagr.task.models;
 
 public class Task {
-    public Task(int id, String taskTitle) {
+    public Task(int id, String taskTitle,boolean isDone ) {
         this.id = id;
         this.taskTitle = taskTitle;
-        isDone = false;
+        this.isDone = isDone;
     }
 
     private int id;

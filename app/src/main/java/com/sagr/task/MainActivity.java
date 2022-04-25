@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                     if(!editTitle.getText().toString().equals("")){
                          ArrayList<Task> taskArrayList;
 
-                        dataBaseAdapter.insertEntry(new Task(1, editTitle.getText().toString()));
+                        dataBaseAdapter.insertEntry(new Task(1, editTitle.getText().toString(),false));
                         taskArrayList = dataBaseAdapter.getEntry();
 
                         adapter.setTaskArrayList(taskArrayList);
