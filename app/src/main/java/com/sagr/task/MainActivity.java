@@ -14,6 +14,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sagr.task.adapter.TaskRecViewAdapter;
 import com.sagr.task.models.Task;
+import com.sagr.task.utils.DataBaseAdapter;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -24,19 +25,20 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TaskRecViewAdapter adapter;
     private FloatingActionButton fab;
+    private DataBaseAdapter dataBaseAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dataBaseAdapter = new DataBaseAdapter(this);
+
         fab = findViewById(R.id.fab);
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         recyclerView = findViewById(R.id.recyclerView);
         adapter = new TaskRecViewAdapter();
         ArrayList<Task> tasks = new ArrayList<>();
-        tasks.add(new Task(1, "First task"));
-        tasks.add(new Task(2, "Another task"));
-        tasks.add(new Task(3, "Another task"));
-        tasks.add(new Task(4, "Another task"));
+        tasks = dataBaseAdapter.getIntery();
+
         adapter.setTaskArrayList(tasks);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -46,17 +48,21 @@ public class MainActivity extends AppCompatActivity {
             btnSave.setText("Add");
 
             final EditText editTitle = bottomSheetDialog.findViewById(R.id.editTaskTitle);
-            btnSave.setOnClickListener(v1 -> {
-           if(!editTitle.getText().toString().equals("")){
-               Random r = new Random();
-               int randomId = r.nextInt(1000);
+            btnSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(!editTitle.getText().toString().equals("")){
+                         ArrayList<Task> taskArrayList;
 
-               tasks.add(new Task(randomId, editTitle.getText().toString()));
-               adapter.setTaskArrayList(tasks);
-               Toast.makeText(this, "Success",Toast.LENGTH_SHORT).show();
-               bottomSheetDialog.hide();
-           }
-           });
+                        dataBaseAdapter.insertEntry(new Task(1, editTitle.getText().toString()));
+                        taskArrayList = dataBaseAdapter.getIntery();
+
+                        adapter.setTaskArrayList(taskArrayList);
+                        Toast.makeText(MainActivity.this, "Success",Toast.LENGTH_SHORT).show();
+                        bottomSheetDialog.hide();
+                    }
+                }
+            });
 
 
             bottomSheetDialog.show();
