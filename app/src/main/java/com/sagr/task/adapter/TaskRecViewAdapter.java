@@ -16,12 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.sagr.task.R;
 import com.sagr.task.models.Task;
+import com.sagr.task.utils.DataBaseAdapter;
 
 import java.util.ArrayList;
 
 public class TaskRecViewAdapter extends RecyclerView.Adapter<TaskRecViewAdapter.TaskViewHolder> {
 
+
+    private DataBaseAdapter db;
     private ArrayList<Task> taskArrayList ;
+
+    public TaskRecViewAdapter(DataBaseAdapter db) {
+        this.db = db;
+    }
 
     @NonNull
     @Override
@@ -43,7 +50,9 @@ public class TaskRecViewAdapter extends RecyclerView.Adapter<TaskRecViewAdapter.
 
             final EditText editTitle = bottomSheetDialog.findViewById(R.id.editTaskTitle);
             btnSave.setOnClickListener(v1 -> {
+
                 holder.taskTitle.setText(editTitle.getText());
+                db.updateTaskTitle(taskArrayList.get(holder.getAdapterPosition()).getId(),editTitle.getText().toString());
                 Toast.makeText(holder.itemView.getContext(), "Success",Toast.LENGTH_SHORT).show();
                 bottomSheetDialog.hide();
             });

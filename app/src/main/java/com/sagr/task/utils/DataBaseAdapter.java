@@ -32,7 +32,7 @@ public class DataBaseAdapter {
         return  id ;
 
     }
-    public ArrayList<Task> getIntery(){
+    public ArrayList<Task> getEntry(){
         ArrayList<Task> taskArrayList =new ArrayList<>();
         Cursor c;
         SQLiteDatabase sqLiteDatabase =databaseHelper.getReadableDatabase();
@@ -45,6 +45,13 @@ public class DataBaseAdapter {
         return taskArrayList ;
     }
 
+    public boolean updateTaskTitle(int id , String title){
+        ContentValues cv = new ContentValues();
+        cv.put(DataBaseHelper.COL_Title,title);
+        SQLiteDatabase sqLiteDatabase =databaseHelper.getWritableDatabase();
+        sqLiteDatabase.update(DataBaseHelper.TABLE_NAME,cv, DataBaseHelper.COL_Id+" = ?", new String[]{String.valueOf(id)});
+        return true;
+    }
 
 
     public static class DataBaseHelper extends SQLiteOpenHelper{

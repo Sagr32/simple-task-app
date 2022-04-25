@@ -17,7 +17,6 @@ import com.sagr.task.models.Task;
 import com.sagr.task.utils.DataBaseAdapter;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         recyclerView = findViewById(R.id.recyclerView);
-        adapter = new TaskRecViewAdapter();
+        adapter = new TaskRecViewAdapter(dataBaseAdapter);
         ArrayList<Task> tasks = new ArrayList<>();
-        tasks = dataBaseAdapter.getIntery();
+        tasks = dataBaseAdapter.getEntry();
 
         adapter.setTaskArrayList(tasks);
         recyclerView.setAdapter(adapter);
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                          ArrayList<Task> taskArrayList;
 
                         dataBaseAdapter.insertEntry(new Task(1, editTitle.getText().toString()));
-                        taskArrayList = dataBaseAdapter.getIntery();
+                        taskArrayList = dataBaseAdapter.getEntry();
 
                         adapter.setTaskArrayList(taskArrayList);
                         Toast.makeText(MainActivity.this, "Success",Toast.LENGTH_SHORT).show();
